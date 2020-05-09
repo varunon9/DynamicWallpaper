@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -16,10 +17,12 @@ public class MyService extends Service {
     private String TAG = "MyService";
     public static boolean isServiceRunning;
     private String CHANNEL_ID = "NOTIFICATION_CHANNEL";
+    private ScreenLockReceiver screenLockReceiver;
 
     public MyService() {
-        isServiceRunning = false;
         Log.d(TAG, "constructor called");
+        isServiceRunning = false;
+        screenLockReceiver = new ScreenLockReceiver();
     }
 
     @Override
@@ -28,6 +31,12 @@ public class MyService extends Service {
         Log.d(TAG, "onCreate called");
         createNotificationChannel();
         isServiceRunning = true;
+
+        // register receiver to listen for screen on events
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(screenLockReceiver, filter);
     }
 
     @Override
@@ -66,9 +75,13 @@ public class MyService extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         Log.d(TAG, "onDestroy called");
         isServiceRunning = false;
         stopForeground(true);
+
+        // unregister receiver
+        unregisterReceiver(screenLockReceiver);
+
+        super.onDestroy();
     }
 }

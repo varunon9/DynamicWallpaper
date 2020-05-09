@@ -23,7 +23,7 @@ public class MyWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Log.d(TAG, "doWork called");
+        Log.d(TAG, "doWork called for: " + this.getId());
         if (!MyService.isServiceRunning) {
             Log.d(TAG, "starting service from doWork");
             Intent intent = new Intent(this.context, MyService.class);
@@ -34,5 +34,11 @@ public class MyWorker extends Worker {
             }
         }
         return Result.success();
+    }
+
+    @Override
+    public void onStopped() {
+        Log.d(TAG, "onStopped called for: " + this.getId());
+        super.onStopped();
     }
 }

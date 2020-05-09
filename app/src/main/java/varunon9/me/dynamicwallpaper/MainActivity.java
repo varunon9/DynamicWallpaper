@@ -2,6 +2,7 @@ package varunon9.me.dynamicwallpaper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -15,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "MainActivity";
+    private String UNIQUE_WORK_NAME = "StartMyServiceViaWorker";
+    private String WORKER_TAG = "MyServiceWorkerTag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +61,20 @@ public class MainActivity extends AppCompatActivity {
     public void startServiceViaWorker() {
         Log.d(TAG, "startServiceViaWorker called");
         WorkManager workManager = WorkManager.getInstance(this);
-        
+
         // Note: The minimum repeat interval that can be defined is 15 minutes (same as the JobScheduler API).
         PeriodicWorkRequest request =
-                new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES)
+                new PeriodicWorkRequest.Builder(MyWorker.class, 16, TimeUnit.MINUTES)
+                        //.addTag(WORKER_TAG)
                         .build();
-        workManager.enqueue(request);
+        // below method will schedule a new work, each time app is opened
+        //workManager.enqueue(request);
+
+        // to schedule a unique work, no matter how many times app is opened i.e. startServiceViaWorker gets called
+        // https://developer.android.com/topic/libraries/architecture/workmanager/how-to/unique-work
+        // do check for AutoStart permission
+        workManager.enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, request);
+
+
     }
 }
