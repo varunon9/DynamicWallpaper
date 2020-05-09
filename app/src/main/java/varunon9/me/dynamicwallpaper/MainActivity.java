@@ -75,6 +75,5 @@ public class MainActivity extends AppCompatActivity {
         // do check for AutoStart permission
         workManager.enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, request);
 
-
     }
 }

@@ -57,6 +57,8 @@ public class MyService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
+
+        // does not work as expected though, even START_NOT_STICKY gives same result
         return START_STICKY;
     }
 
@@ -83,5 +85,12 @@ public class MyService extends Service {
         unregisterReceiver(screenLockReceiver);
 
         super.onDestroy();
+    }
+
+    // Not getting called on Xiaomi Redmi Note 7S even when autostart permission is granted
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Log.d(TAG, "onTaskRemoved called");
+        super.onTaskRemoved(rootIntent);
     }
 }
