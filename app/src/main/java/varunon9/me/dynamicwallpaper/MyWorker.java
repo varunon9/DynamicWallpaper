@@ -24,6 +24,7 @@ public class MyWorker extends Worker {
     @Override
     public Result doWork() {
         Log.d(TAG, "doWork called for: " + this.getId());
+        Log.d(TAG, "Service Running: " + MyService.isServiceRunning);
         if (!MyService.isServiceRunning) {
             Log.d(TAG, "starting service from doWork");
             Intent intent = new Intent(this.context, MyService.class);

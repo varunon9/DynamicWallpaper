@@ -12,17 +12,23 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.work.PeriodicWorkRequest;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MyService extends Service {
     private String TAG = "MyService";
     public static boolean isServiceRunning;
     private String CHANNEL_ID = "NOTIFICATION_CHANNEL";
     private ScreenLockReceiver screenLockReceiver;
+    private Timer timer;
 
     public MyService() {
         Log.d(TAG, "constructor called");
         isServiceRunning = false;
         screenLockReceiver = new ScreenLockReceiver();
+        timer = new Timer();
     }
 
     @Override
@@ -37,6 +43,14 @@ public class MyService extends Service {
         filter.addAction(Intent.ACTION_USER_PRESENT);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(screenLockReceiver, filter);
+
+        // a dummy timer task - can be ignored
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d(TAG, "run called inside scheduleAtFixedRate");
+            }
+        }, 0, PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS);
     }
 
     @Override
@@ -83,6 +97,15 @@ public class MyService extends Service {
 
         // unregister receiver
         unregisterReceiver(screenLockReceiver);
+
+        // cancel the timer
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        // call MyReceiver which will restart this service via a worker
+        Intent broadcastIntent = new Intent(this, MyReceiver.class);
+        sendBroadcast(broadcastIntent);
 
         super.onDestroy();
     }

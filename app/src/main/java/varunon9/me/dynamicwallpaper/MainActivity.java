@@ -64,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Note: The minimum repeat interval that can be defined is 15 minutes (same as the JobScheduler API).
         PeriodicWorkRequest request =
-                new PeriodicWorkRequest.Builder(MyWorker.class, 16, TimeUnit.MINUTES)
+                new PeriodicWorkRequest.Builder(
+                        MyWorker.class,
+                        PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
+                        TimeUnit.MINUTES)
                         //.addTag(WORKER_TAG)
                         .build();
         // below method will schedule a new work, each time app is opened
