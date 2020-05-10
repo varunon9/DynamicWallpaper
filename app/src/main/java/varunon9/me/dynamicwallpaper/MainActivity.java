@@ -16,8 +16,6 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "MainActivity";
-    private String UNIQUE_WORK_NAME = "StartMyServiceViaWorker";
-    private String WORKER_TAG = "MyServiceWorkerTag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         if (!MyService.isServiceRunning) {
             Intent serviceIntent = new Intent(this, MyService.class);
             ContextCompat.startForegroundService(this, serviceIntent);
+            //startService(serviceIntent);
         }
     }
 
@@ -60,13 +59,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void startServiceViaWorker() {
         Log.d(TAG, "startServiceViaWorker called");
+        String UNIQUE_WORK_NAME = "StartMyServiceViaWorker";
+        //String WORKER_TAG = "MyServiceWorkerTag";
         WorkManager workManager = WorkManager.getInstance(this);
 
-        // Note: The minimum repeat interval that can be defined is 15 minutes (same as the JobScheduler API).
+        // As per Documentation: The minimum repeat interval that can be defined is 15 minutes (
+        // same as the JobScheduler API), but in practice 15 doesn't work. Using 16 here
         PeriodicWorkRequest request =
                 new PeriodicWorkRequest.Builder(
                         MyWorker.class,
-                        PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
+                        16,
                         TimeUnit.MINUTES)
                         //.addTag(WORKER_TAG)
                         .build();

@@ -71,9 +71,15 @@ public class MyService extends Service {
                 .setContentIntent(pendingIntent)
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 .build();
+        /*
+         * A started service can use the startForeground API to put the service in a foreground state,
+         * where the system considers it to be something the user is actively aware of and thus not
+         * a candidate for killing when low on memory.
+         */
         startForeground(1, notification);
 
         // does not work as expected though, even START_NOT_STICKY gives same result
+        // device specific issue?
         return START_STICKY;
     }
 

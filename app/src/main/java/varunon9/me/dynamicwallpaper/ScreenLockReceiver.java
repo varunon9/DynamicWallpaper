@@ -20,6 +20,7 @@ public class ScreenLockReceiver extends BroadcastReceiver {
             Log.d(TAG, "onReceive called: screen off");
         } else if (action.equals(Intent.ACTION_USER_PRESENT)) {
             Log.d(TAG, "onReceive called: screen unlocked");
+            new Util().setRandomWallpaper(context);
         }
     }
 }
