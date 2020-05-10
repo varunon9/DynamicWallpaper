@@ -15,7 +15,7 @@ Android- Automatically change Home or Lock screen wallpaper whenever screen gets
 
 ### Demo GIF
 
-[dynamic-wallpaper.gif](https://github.com/varunon9/DynamicWallpaper/blob/master/demo/dynamic-wallpaper.gif)
+![dynamic-wallpaper.gif](demo/dynamic-wallpaper.gif)
 
 ## Tutorial
 
@@ -55,4 +55,4 @@ While a `Worker` defines the unit of work, a `WorkRequest` defines how and when 
 4. To overcome this limitation, app schedules a `PeriodicWorkRequest` via `WorkManager`
 5. This Background Job runs on every 16 mins and it's job is to restart the Service if not already running
 6. This Job is also responsible for launching Service for the very first time
-7. Android system guarantees that this Background Job will run given that it has AutoStart permission
+7. Android system guarantees that this Background Job will run given that it has AutoStart permission (even if device restarts)
