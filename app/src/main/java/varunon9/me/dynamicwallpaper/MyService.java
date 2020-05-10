@@ -65,10 +65,11 @@ public class MyService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Foreground Service")
-                .setContentText("Must be running all the time.")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("Service is Running")
+                .setContentText("Listening for Screen Off/On events")
+                .setSmallIcon(R.drawable.ic_wallpaper_black_24dp)
                 .setContentIntent(pendingIntent)
+                .setColor(getResources().getColor(R.color.colorPrimary))
                 .build();
         startForeground(1, notification);
 
