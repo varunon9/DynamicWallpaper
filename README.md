@@ -1,21 +1,6 @@
-# DynamicWallpaper
-Android- Automatically change Home or Lock screen wallpaper whenever screen gets unlocked or locked
+# Always Running Service in Android
 
-### Functionalities
-
-1. Change home screen wallpaper whenever screen gets unlocked: <b>Done</b>
-2. Change lock screen wallpaper whenever screen gets locked: <b>Todo</b>
-
-### Technical Tasks
-
-1. Settings screen to coose for event (screen lock/unlock): <b>Pending</b>
-2. Asking `WRITE_EXTERNAL_STORAGE` permission on app launch: <b>Pending</b>
-3. Interface where user can add wallpapers: <b>Pending</b>
-4. Interface to enable/disable this app: <b>Pending</b>
-
-### Demo GIF
-
-![dynamic-wallpaper.gif](demo/dynamic-wallpaper.gif)
+Gist: https://gist.github.com/varunon9/f2beec0a743c96708eb0ef971a9ff9cd
 
 ## Tutorial
 
@@ -34,18 +19,6 @@ These broadcasts are sent when an event of interest occurs. For example, the And
 With `WorkManager`, developers can easily set up a task and hand it off to the system to run under the specified conditions.
 A task is defined using the `Worker` class. The `doWork()` method is run synchronously on a background thread provided by WorkManager.
 While a `Worker` defines the unit of work, a `WorkRequest` defines how and when work should be run. Tasks may be one-off or periodic.
-
-## Working of DynamicWallpaper
-
-1. App always keeps running a Foreground Service
-2. This service registers a Broadcast Receiver
-3. This broadcast receiver listens for phone screen lock & unlock events
-4. Whenever screen is unlocked, receiver calls a method `setRandomWallpaper`
-5. This method picks a random wallpaper from `dynamic-wallpaper` directory (inside phone storage)
-6. If this directory doesn't exists then it creates one
-7. User must manually add some wallpapers to this directory (until UI is built for it - Todo)
-8. User must explicitly grant `WRITE_EXTERNAL_STORAGE` to this app (until app starts asking for it automatically on launch - Todo)
-9. Depending upon the devices, User might have to explicitly grant AutoStart permission to the app
 
 ### How does app manage to keep service running all the time?
 
